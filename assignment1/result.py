@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
+import numpy as np
+
 import rootfinding as rf
 
-import numpy as np
+from visuallize import plot
 
 f1 = lambda x: x**3 - 3*x**2 + 3*x - 1
 f2 = lambda x: x**5 - 4*x**4 + 3*x**3 + 9*x - 5
