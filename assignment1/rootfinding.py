@@ -2,7 +2,7 @@ import numpy as np
 import math
 import time
 
-MAXITER = 100
+MAXITER = 10000
 ITER = 0
 
 def bisection(f, a, b, tol=1e-6):
@@ -10,6 +10,7 @@ def bisection(f, a, b, tol=1e-6):
   global ITER
   global MAXITER
 
+  result = []
 
   if ITER == 0 :
     print("-------------------------Bisection Method-------------------------")
@@ -22,18 +23,21 @@ def bisection(f, a, b, tol=1e-6):
   
   fx = f((a+b)/2)
 
-  if (fx == 0) or ((b-a) < tol):
+  if (fx == 0.0) or ((b-a) < tol):
     ITER += 1
     end = time.time()
 
-    if round(fx,3) is not 0:
-      print(round(fx,3))
-      print("Root in not here... Try Agian with wider range!")
-      pass 
 
+    # if fx is not 0.0:
+    #   print("Root in not here... Try Agian with wider range!")
+    #   return (a+b)/2, a, b
+
+    # else :
     print("=========================Root Found!=========================")
     print(f"[Terminal Result] - [iter] : {ITER}, [a] : {a}, [b] : {b}, [time] : {end-start:.6f} sec\n")
 
+    result.append((a+b)/2)
+    
     return (a+b)/2, a, b
   
   elif fx*f(a) < 0:
@@ -49,7 +53,7 @@ def bisection(f, a, b, tol=1e-6):
     return bisection(f, a, b, tol)
 
 
-def newton(f, x0, tol=1e-5):
+def newton(f, x0, tol=1e-6):
 
   global ITER
   global MAXITER
@@ -75,6 +79,7 @@ def newton(f, x0, tol=1e-5):
     print(f"[Root Finding...] - [iter] : {ITER}, [X] : {new_x} ")
 
     if (f(new_x) == 0 ) or ((abs(new_x - old_x)) < tol):
+      print("break!")
       break
 
     old_x = new_x
@@ -109,6 +114,7 @@ def secant(f, x0, x1, tol=1e-6):
       print(f"[Root Finding...] - [iter] : {ITER}, [X] : {new_x} ")
   
       if (abs(new_x - x1)) < tol:
+        print("break!")
         break
   
       x0 = x1
@@ -127,6 +133,8 @@ def regular_falsi(f, a, b, tol=1e-6):
   if ITER is not 0 :
     ITER = 0
 
+  prev_x = 0
+
   print("-------------------------Regular Falsi Method-------------------------")
   print(f"[Starting Point] - [a] : {a}, [b] : {b} \n")
 
@@ -136,20 +144,25 @@ def regular_falsi(f, a, b, tol=1e-6):
 
     fa = f(a)
     fb = f(b)
-
+    
     new_x = b - fb * ((b - a) / (fb - fa))
 
-    ITER += 1
-    print(f"[Root Finding...] - [iter] : {ITER}, [X] : {new_x} ")
+    if fa * f(new_x) < 0:
+      b = new_x
+    else:
+      a = new_x
 
-    if (abs(new_x - b)) < tol:
+    ITER += 1
+    print(f"[Root Finding...] - [iter] : {ITER}, [a] : {a}, [b] : {b}")
+
+    if abs(new_x - prev_x) < tol:
       break
 
-    a = b
-    b = new_x
+    prev_x = new_x
+
 
   end = time.time()
   print("\n =========================Root Found!=========================")
-  print(f"[Terminal Result] - [iter] : {ITER}, [X] : {new_x}, [time] : {end - start:.5f} sec\n")
+  print(f"[Terminal Result] - [iter] : {ITER}, [a] : {a}, [b] : {b}, [time] : {end - start:.5f} sec\n")
   return new_x
 
