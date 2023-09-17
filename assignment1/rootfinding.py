@@ -26,8 +26,13 @@ def bisection(f, a, b, tol=1e-6):
     ITER += 1
     end = time.time()
 
+    if round(fx,3) is not 0:
+      print(round(fx,3))
+      print("Root in not here... Try Agian with wider range!")
+      pass 
+
     print("=========================Root Found!=========================")
-    print(f"[Terminal Result] - [iter] : {ITER}, [a] : {a}, [b] : {b}, [time] : {end-start:.6f} sec")
+    print(f"[Terminal Result] - [iter] : {ITER}, [a] : {a}, [b] : {b}, [time] : {end-start:.6f} sec\n")
 
     return (a+b)/2, a, b
   
@@ -52,7 +57,7 @@ def newton(f, x0, tol=1e-5):
   if ITER is not 0 :
     ITER = 0
 
-  h = 1e-9
+  h = 1e-6
   old_x = x0
 
   print("-------------------------Newton Method-------------------------")
@@ -64,12 +69,12 @@ def newton(f, x0, tol=1e-5):
     fx = f(old_x)
     dfx = (f(old_x + h) - f(old_x)) / h
 
-    new_x = old_x - fx/dfx
+    new_x = old_x - fx/(dfx + h) # h is added to prevent zero division
 
     ITER += 1
     print(f"[Root Finding...] - [iter] : {ITER}, [X] : {new_x} ")
 
-    if (abs(new_x - old_x)) < tol:
+    if (f(new_x) == 0 ) or ((abs(new_x - old_x)) < tol):
       break
 
     old_x = new_x
