@@ -5,7 +5,7 @@ import time
 
 def linear_conjugate(f, x0, max_iter=100, eps=1e-8, verbose=False):
 
-    print("linear_conjugate\n")
+    print("Using Method : linear_conjugate\n")
     x = x0[0]
     y = x0[1]
 
@@ -46,7 +46,7 @@ def linear_conjugate(f, x0, max_iter=100, eps=1e-8, verbose=False):
     return x, y
 
 def cg_fr(f, x0, max_iter=10000, eps=1e-5, verbose=False):
-    print("cg_fr\n")
+    print("Using Method : cg_fr\n")
     x = x0[0]
     y = x0[1]
 
@@ -86,9 +86,9 @@ def cg_fr(f, x0, max_iter=10000, eps=1e-5, verbose=False):
         rx, ry = gradient(f, x, y)
         r = np.array([rx, ry])
 
-        beta_x = (rx.T * rx) / (prev_gx.T * prev_gy)
-        beta_y = (ry.T * ry) / (prev_gy.T * prev_gy)
-        beta = (r.T @ r) / (prev_g.T @ prev_g)
+        beta_x = (rx.T * rx) / (prev_gx.T * prev_gx)
+        beta_y = (ry.T * ry) / (prev_gy.T * prev_gy) #각각 나누어 구하기
+        beta = (r.T @ r) / (prev_g.T @ prev_g) # 행렬연산으로 한번에 구하기 
 
         dx = -rx + beta_x * dx
         dy = -rx + beta_y * dy
@@ -100,13 +100,13 @@ def cg_fr(f, x0, max_iter=10000, eps=1e-5, verbose=False):
         if (prev_f < fxy) & (abs(fxy - prev_f) > 1):
             end = time.time()
             print("=========================Optimization Complete!=========================")
-            print(f"[Terminal Result] - [iter] : {iter}, [x] : {x}, [y] : {y}, f(x,y) : {fxy}, [Time] : {end - start}\n")
+            print(f"[Terminal Result] - [iter] : {i}, [x] : {x}, [y] : {y}, f(x,y) : {fxy}, [Time] : {end - start}\n")
             return x, y
 
     return x, y 
 
 def cg_pr(f, x0, max_iter=10000, eps=1e-5, verbose=False):
-    print("cg_pr\n")
+    print("Using Method : cg_pr\n")
     x = x0[0]
     y = x0[1]
 
@@ -165,7 +165,7 @@ def cg_pr(f, x0, max_iter=10000, eps=1e-5, verbose=False):
 
 
 def cg_hs(f, x0, max_iter=1000, eps=1e-5, verbose=False):
-    print("cg_hs\n")
+    print("Using Method : cg_hs\n")
     x = x0[0]
     y = x0[1]
 
@@ -203,7 +203,7 @@ def cg_hs(f, x0, max_iter=1000, eps=1e-5, verbose=False):
 
         rx, ry = gradient(f, x, y)
 
-        beta_x = (rx.T * (rx.T - prev_gx)) / ((rx - prev_gx).T * prev_gx) #T 를 어떻게 해야함?
+        beta_x = (rx.T * (rx.T - prev_gx)) / ((rx - prev_gx).T * prev_gx)
         beta_y = (ry.T * (ry.T - prev_gy)) / ((ry - prev_gy).T * prev_gy)
 
         dx = -rx + beta_x * dx
