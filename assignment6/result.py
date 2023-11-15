@@ -5,14 +5,12 @@ import numpy as np
 import pandas as pd
 import pdb
 
-data_1 = pd.read_table("Data/Model1_Data.txt", engine='python') # dataframe
-data_2 = pd.read_table("Data/Model2_Data.txt", engine='python')
+model1 = pd.read_table("Data/Model1_Data.txt", engine='python') # dataframe
+model2 = pd.read_table("Data/Model2_Data.txt", engine='python')
 
-data_1 = delete_nan(data_1)
-data_2 = delete_nan(data_2)
+model1 = delete_nan(model1)
+model2 = delete_nan(model2)
 
-print(data_1)
-print(data_2)
 
 def f1(x,y,z, P):
 
@@ -35,7 +33,10 @@ def f2(x,y,z, P):
   return np.exp(((x-a)**2 + (y-b)**2 + (z-c)**2)/d**2)
 
 def main():
-  Gauss_Newton(f1, data_1, 1)
+  # Gauss_Newton(f1, model1, 1)
+  # Gauss_Newton(f2, model1, 2)
+  Levenberg_Marquardt(f2, model2, 1)
+  Levenberg_Marquardt(f2, model2, 2)
 
 if __name__ == "__main__":
   main()
